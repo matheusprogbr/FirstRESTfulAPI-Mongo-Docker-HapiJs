@@ -1,0 +1,22 @@
+{
+  "name": "api_restful-mongo_docker_hapijs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "nodemon src/server.js"
+  },
+  "keywords": [
+    "Matheus",
+    "Henrique",
+    "matheusprogbr"
+  ],
+  "author": "Matheus Henrique",
+  "license": "ISC",
+  "dependencies": {
+    "@hapi/hapi": "^20.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}
