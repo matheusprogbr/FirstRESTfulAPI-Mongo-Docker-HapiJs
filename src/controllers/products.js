@@ -1,10 +1,35 @@
+const ProductModel = require('../models/Product');
 
-const getAll = (request, h) => {
-  return 'Hallo, mein freund!!';
+const transformer = (product) => ({
+  type: 'products',
+  id: product.id,
+  attributes: {
+    name: product.name,
+    price: product.price,
+  },
+  links: {
+    self: `/api/v1/products/${product.id}`
+  }
+});
+
+const getAll = async (request, h) => {
+  const products = await ProductModel.find({});
+  return h.response(products.map(transformer));
 };
 
-const save = (request, h) => {
-  return 'Oi, Deu POST!';
+const save = async (request, h) => {
+  const {
+    name,
+    price
+  } = request.payload;
+
+  const product = new ProductModel;
+  product.name = name;
+  product.price = price;
+
+  await product.save();
+
+  return h.response(transformer(product)).code(201);
 };
 
 

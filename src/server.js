@@ -1,10 +1,11 @@
+require('./services/mongo');
 const Hapi = require('@hapi/hapi');
 const routes = require('./routes');
 
 const init = async () => {
   const server = Hapi.server({
     port: 3500,
-    host:'localhost'
+    host: 'localhost'
   });
 
   server.route(routes);
