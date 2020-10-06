@@ -19,7 +19,28 @@ const getAll = async (request, h) => {
   };
 };
 
+const getProduct = async (request, h) => {
+  const {
+    id
+  } = request.params;
+
+  const product = await ProductModel.findById(id);
+
+  if (!product) return h.response('Product not found!').code(404);
+
+  return h.response({
+    data: transformer(product)
+  }).code(200);
+};
+
 const save = async (request, h) => {
+  const keys = Object.keys(request.payload);
+  for (key of keys) {
+    if (request.payload[key] == '') {
+      return h.response('Invalid Input. Complete all the blanks');
+    }
+  };
+
   const {
     name,
     price
@@ -32,6 +53,31 @@ const save = async (request, h) => {
   await product.save();
 
   return h.response(transformer(product)).code(201);
+};
+
+const updateProduct = async (request, h) => {
+  const {
+    id
+  } = request.params;
+
+  if (!request.payload) return h.response('Fill the fields!').code(204);
+
+  const keys = Object.keys(request.payload);
+  for (key of keys) {
+    if (request.payload[key] == '') {
+      return h.response('Invalid Input. Complete all the blanks');
+    }
+  };
+
+  const newProduct = request.payload;
+
+  const product = await ProductModel.findOneAndUpdate({
+    _id: id
+  }, newProduct);
+
+  return h.response({
+    data: transformer(newProduct)
+  }).code(201);
 };
 
 const remove = async (request, h) => {
@@ -51,6 +97,8 @@ const remove = async (request, h) => {
 
 module.exports = {
   getAll,
+  getProduct,
   save,
+  updateProduct,
   remove
 };
